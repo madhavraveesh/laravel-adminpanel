@@ -52,9 +52,11 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
+        //abort_unless(\Gate::allows('product_show'), 403);
+
+        return view('admin.products.show', compact('product'));
     }
 
     /**
@@ -63,9 +65,10 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        //
+        //$product = Product::find($id);
+        return view('admin.products.edit', compact('product'));
     }
 
     /**
@@ -75,9 +78,11 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, $id)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $product->update($request->all());
+
+        return redirect()->route('admin.products.index');
     }
 
     /**
@@ -86,9 +91,11 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return back();
     }
 
     public function massDestroy(MassDestroyProductRequest $request)

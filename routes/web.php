@@ -11,15 +11,7 @@
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::resource('posts', 'PostController');
-Route::resource('searchs', 'SearchController');*/
 //Auth::routes();
-
-//Route::get('/home', 'PostController@index')->name('home');
 
 Route::redirect('/', '/login');
 
@@ -30,10 +22,22 @@ Auth::routes(['register' => true]);
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
 
-    //Route::resource('permissions', 'PermissionsController'); 
+    Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
+
+    Route::resource('users', 'UsersController');
+
+    Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
+    Route::resource('roles', 'RolesController');
+
+    Route::resource('permissions', 'PermissionsController');
+    Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy'); 
     
     Route::delete('products/destroy', 'ProductsController@massDestroy')->name('products.massDestroy');
-
     Route::resource('products', 'ProductsController');
+
+    Route::delete('pages/destroy', 'PagesController@massDestroy')->name('pages.massDestroy');
+    Route::resource('pages', 'PagesController');
+
+    Route::resource('settings', 'SettingsController');
 
 });
